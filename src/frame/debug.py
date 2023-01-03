@@ -71,6 +71,8 @@ def my_excepthook(exc_type, exc_value, tb):
     print(str(datetime.datetime.now().month)+ '月' + str(datetime.datetime.now().day) + '日 ' + datetime.datetime.now().strftime('%H:%M:%S.%f') + '\n' + msg, file=open(os.environ["WORKON_HOME"]+'\error.log','a+'))
     DebugPrint("出现未处理异常, 您可以查看error.log并联系作者。", debug_level=DEBUG_LEVEL.Error)
 
+sys.excepthook = my_excepthook # 未知异常中断处理
+
 # 延迟
 def Delay(second:int):
     time.sleep(second)

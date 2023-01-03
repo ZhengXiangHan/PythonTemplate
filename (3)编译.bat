@@ -12,7 +12,7 @@ set NUITKA=nuitka
 rem 输出目录相对路径
 set OUTPUT=output
 rem 图标相对路径
-set ICO=ico\template.ico
+set ICO=res\template.ico
 rem 源文件目录相对路径
 set SRC=src
 rem 源文件目录下 主文件名称

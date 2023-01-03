@@ -82,14 +82,18 @@ class Module():
         self.module_name = module_name
         self.__state = MODULESTATE.New
         self.__debug = True
-        self.init_func = self._emptyF
         # self.run_func = self._emptyF # 一次性处理的功能init即可完成，持续性处理推荐新建线程，否则这里就是主线程来执行，注意阻塞
-        self.exit_func = self._emptyF
         self.init_dependent_list = init_dependent_list    # 如['debug', 'xxxx'], 初始化依赖列表, 当模块初始化时, 要先初始化这里面的模块
         self.exit_dependent_list = []   # 退出依赖列表, 当模块退出时, 要先退出这里面的模块
         self.threadlist = []  # 模块线程列表
         global ModuleList
         ModuleList.append(self) # 加入模组列表
+    def init_func(self):
+        self.debuge_scs(self.module_name, "init.")
+        return True
+    def exit_func(self):
+        self.debuge_scs(self.module_name, "exit.")
+        return True
     # 模块Error打印
     def debuge_err(self, *values, file=sys.stdout, sep=' ', end='\n', flush=False, timeprint=True, newline=False):
         if self.__debug == True:
@@ -176,6 +180,12 @@ def ModuleManagerExit():
     '''模块退出'''
     for module in ModuleList:
         module.moduleexit()
+
+import atexit
+# 程序退出
+@atexit.register 
+def clean():
+    ModuleManagerExit()
 
 def ShowAllThread():
     for module in ModuleList:
